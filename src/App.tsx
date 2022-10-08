@@ -7,7 +7,6 @@ import data from "./constant/data.json";
 const container = css`
   width: 100%;
   height: 100vh;
-  border: 2px solid red;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,7 +17,7 @@ const container = css`
     top: 0;
     width: 100%;
     height: 100%;
-    background-image: url("/backgroundd.jpg");
+    background-image: url("/background.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
