@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.js": "/static/js/main.e88c3845.js",
-    "index.html": "/index.html",
-    "main.e88c3845.js.map": "/static/js/main.e88c3845.js.map"
+    "main.js": "/music-player/static/js/main.e88c3845.js",
+    "index.html": "/music-player/index.html",
+    "main.e88c3845.js.map": "/music-player/static/js/main.e88c3845.js.map"
   },
   "entrypoints": [
     "static/js/main.e88c3845.js"
