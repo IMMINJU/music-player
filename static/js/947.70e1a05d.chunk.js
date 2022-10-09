@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkmusic_player=self.webpackChunkmusic_player||[]).push([[947],{947:function(e,r,n){n.r(r);var t,a=n(168),u=n(554),i=n(787),l=n(923);r.default=function(e){var r=e.currentTrack,n=e.player;return(0,l.tZ)(i.Z,{ref:n,videoId:r.videoId,opts:{height:"0",width:"0",playerVars:{autoplay:1,loop:1,Playlist:r.videoId}},onReady:function(){return n.current.internalPlayer.playVideo()},onEnd:function(){return n.current.resetPlayer()},css:(0,u.iv)(t||(t=(0,a.Z)(["\n        display: none;\n      "])))})}}}]);
+//# sourceMappingURL=947.70e1a05d.chunk.js.map
