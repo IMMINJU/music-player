@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { PlayBar, Playlist } from "./components";
 import data from "./constant/data.json";
 
@@ -17,7 +17,7 @@ const container = css`
     top: 0;
     width: 100%;
     height: 100%;
-    background-image: url("/background.jpg");
+    background-image: url("/music-player/background.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -48,10 +48,17 @@ const content = css`
   box-shadow: 2px 2px 10px #0000004b;
 `;
 
-export type Track = { name: string; duration: number; artist: string };
+export type Track = {
+  name: string;
+  duration: number;
+  artist: string;
+  videoId: string;
+};
 
-function App() {
-  const [currentTrack, selectTrack] = useState<Track>(data[0]);
+const App = () => {
+  const [currentTrack, selectTrack] = useState<Track>(data[10]);
+  const [isPlay, setPlay] = useState(true);
+  const playerRef = useRef<any>();
 
   return (
     <div css={container}>
@@ -61,12 +68,19 @@ function App() {
           <Playlist
             currentTrack={currentTrack}
             onClickTrack={(item: Track) => selectTrack(item)}
+            playMusic={() => setPlay(true)}
+            player={playerRef}
           />
-          <PlayBar currentTrack={currentTrack} />
+          <PlayBar
+            currentTrack={currentTrack}
+            isPlay={isPlay}
+            togglePlay={() => setPlay((prev) => !prev)}
+            player={playerRef}
+          />
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default App;

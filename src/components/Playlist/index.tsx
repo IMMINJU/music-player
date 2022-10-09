@@ -3,6 +3,8 @@ import { css } from "@emotion/react";
 import { msToTime } from "../../utils/time";
 import data from "../../constant/data.json";
 import { Track } from "../../App";
+import YouTube from "react-youtube";
+import { MutableRefObject } from "react";
 
 const wrapper = css`
   background-color: #00000040;
@@ -70,11 +72,16 @@ const tabWrap = css`
   }
 `;
 
+const opts = { height: "0", width: "0", playerVars: { autoplay: 1 } };
+
 type Props = {
   currentTrack: Track;
   onClickTrack: (track: Track) => void;
+  playMusic: () => void;
+  player: MutableRefObject<YouTube>;
 };
-function Playlist({ currentTrack, onClickTrack }: Props) {
+
+const Playlist = ({ currentTrack, onClickTrack, playMusic, player }: Props) => {
   return (
     <section css={wrapper}>
       <div css={tabWrap}>
@@ -85,16 +92,35 @@ function Playlist({ currentTrack, onClickTrack }: Props) {
       {data.map((track, idx) => (
         <div
           key={idx}
-          css={[trackWrap, track.name === currentTrack.name && selectedTrack]}
-          onClick={() => onClickTrack(track)}
+          css={[
+            trackWrap,
+            track.videoId === currentTrack.videoId && selectedTrack,
+          ]}
+          onClick={() => {
+            onClickTrack(track);
+            playMusic();
+          }}
         >
           <p>{track.name}</p>
           <p>{track.artist}</p>
           <p>{msToTime(track.duration)}</p>
+          {track.videoId === currentTrack.videoId ? (
+            <YouTube
+              ref={player}
+              videoId={track.videoId}
+              opts={opts}
+              onEnd={() => player.current.resetPlayer()}
+              css={css`
+                display: none;
+              `}
+            />
+          ) : (
+            <></>
+          )}
         </div>
       ))}
     </section>
   );
-}
+};
 
 export default Playlist;

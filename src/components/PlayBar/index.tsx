@@ -1,10 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import Lottie from "lottie-react";
-import { useEffect, useRef, useState } from "react";
+import { MutableRefObject, useEffect, useRef } from "react";
 import { Track } from "../../App";
 import { msToTime } from "../../utils/time";
 import wave from "../lottie/wave.json";
+import YouTube from "react-youtube";
 
 const container = css`
   flex: 1;
@@ -90,47 +91,34 @@ const waveStyle = css`
   left: 98px;
   height: 130px;
 `;
-const tooltip = css`
-  width: 144px;
-  font-family: "Gemunu Libre";
-  background-color: #00000053;
-  color: #fff;
-  border-radius: 6px;
-  padding: 5px 10px;
-  position: absolute;
-  z-index: 1;
-  top: -46px;
-  right: 0;
-  font-size: 13px;
-  ::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    right: 10%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #00000053 transparent transparent transparent;
-  }
-`;
 
-type Props = { currentTrack: Track };
+type Props = {
+  currentTrack: Track;
+  isPlay: boolean;
+  togglePlay: () => void;
+  player: MutableRefObject<YouTube>;
+};
 
-function PlayBar({ currentTrack }: Props) {
+const PlayBar = ({ currentTrack, isPlay, togglePlay, player }: Props) => {
   const lottieRef = useRef<any>();
-  const [isPlay, setPlay] = useState(false);
+
+  const pauseVideo = () => {
+    lottieRef.current.pause();
+    player && player?.current && player.current.internalPlayer.pauseVideo();
+  };
+
+  const playVideo = () => {
+    lottieRef.current.play();
+    player && player?.current && player.current.internalPlayer.playVideo();
+  };
 
   useEffect(() => {
-    if (lottieRef.current) {
-      lottieRef.current.setSpeed(0.1);
-      lottieRef.current.pause();
-    }
-  }, []);
+    if (lottieRef.current) lottieRef.current.setSpeed(0.1);
+  }, [player]);
 
   return (
     <section css={container}>
       <div css={wrapper}>
-        <div css={tooltip}>Audio output is not supported current version.</div>
         <p css={title}>{currentTrack.name}</p>
         <p css={artist}>{currentTrack.artist}</p>
         <div css={process} />
@@ -138,8 +126,8 @@ function PlayBar({ currentTrack }: Props) {
           <div>
             <button
               onClick={() => {
-                setPlay((prev) => !prev);
-                isPlay ? lottieRef.current.pause() : lottieRef.current.play();
+                isPlay ? pauseVideo() : playVideo();
+                togglePlay();
               }}
             >
               {isPlay ? (
@@ -151,7 +139,7 @@ function PlayBar({ currentTrack }: Props) {
                 <div className="play" css={triangle} />
               )}
             </button>
-            <p>00:00</p>
+            <p>- - : - -</p>
             <Lottie
               lottieRef={lottieRef}
               animationData={wave}
@@ -163,6 +151,6 @@ function PlayBar({ currentTrack }: Props) {
       </div>
     </section>
   );
-}
+};
 
 export default PlayBar;
